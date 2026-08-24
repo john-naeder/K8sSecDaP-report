@@ -1,0 +1,28 @@
+include:
+  - project: 'john-naeder/ci-templates'
+    ref: main
+    file: '/security.gitlab-ci.yml'
+  # Until that project exists on your GitLab, vendor the file instead:
+  #   - local: '.gitlab/ci/security.yml'
+
+stages:
+  - scan
+  - report
+
+variables:
+  SECURITY_FAIL_ON: ''
+
+# LaTeX sources and PDFs. Dependency, IaC and SAST scanning have nothing to
+# look at; secret detection still does, because a report is exactly the kind of
+# document someone pastes a token into.
+deps:trivy:
+  rules: [{ when: never }]
+
+deps:dotnet:
+  rules: [{ when: never }]
+
+iac:trivy:
+  rules: [{ when: never }]
+
+sast:semgrep:
+  rules: [{ when: never }]
